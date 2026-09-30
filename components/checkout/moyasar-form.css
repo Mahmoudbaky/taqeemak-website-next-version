@@ -1,0 +1,53 @@
+/*
+ * Brand overrides for the Moyasar payment form. Its CSS is scoped to div#mysr and uses !important,
+ * so every rule here is prefixed with .tq-moyasar for higher specificity.
+ */
+.tq-moyasar div#mysr {
+  font-family: inherit;
+}
+
+/* Primary (Pay) button */
+.tq-moyasar div#mysr .bg-primary {
+  background-color: #0059c4 !important;
+}
+.tq-moyasar div#mysr .bg-primary:hover:not(:disabled) {
+  background-color: #134382 !important;
+}
+.tq-moyasar div#mysr .rounded-lg {
+  border-radius: 10px !important;
+}
+
+/* Text inputs: match the site's fields (46px, 10px radius, 1px outline, blue focus ring). */
+.tq-moyasar div#mysr input[type="text"],
+.tq-moyasar div#mysr input[type="tel"] {
+  height: 46px !important;
+  padding-inline: 14px !important;
+  font-size: 15px !important;
+  border-radius: 10px !important;
+  --tw-shadow: 0 0 0 1px #e1e7ef !important;
+}
+.tq-moyasar div#mysr input.shadow-input-error {
+  --tw-shadow: 0 0 0 1px #dc2626 !important;
+}
+.tq-moyasar div#mysr input:focus {
+  --tw-shadow: 0 0 0 1px #0059c4, 0 0 0 4px rgb(0 89 196 / 0.25) !important;
+}
+
+/* Card number / expiry / CVC: separate fields with a gap instead of one joined block. */
+.tq-moyasar div#mysr .gap-y-\[1px\] {
+  gap: 10px !important;
+}
+/* Brand icons: vertically centred in the 46px card-number field. */
+.tq-moyasar div#mysr .top-1\/4 {
+  top: 0 !important;
+  right: 12px !important;
+  height: 46px !important;
+  align-items: center !important;
+  --tw-translate-y: 0 !important;
+  transform: none !important;
+}
+
+/* Labels a bit further from their fields. */
+.tq-moyasar div#mysr .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.625rem !important;
+}
