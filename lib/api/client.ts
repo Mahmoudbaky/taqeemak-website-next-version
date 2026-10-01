@@ -4,12 +4,11 @@ import { defaultLocale, hasLocale } from "@/i18n/config";
 import type { ApiResponse } from "@/types/api";
 import { ApiClientError } from "./errors";
 
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
-
 const baseConfig = {
-  baseURL,
+  // Same-origin: next.config.ts proxies /api/v1/* to the backend, which keeps the
+  // refreshToken + fgp HTTP-only cookies first-party (mobile browsers block third-party ones).
+  baseURL: "",
   headers: { "Content-Type": "application/json" },
-  // Sends/receives the refreshToken + fgp HTTP-only cookies on the API domain.
   withCredentials: true,
   timeout: 30_000,
 };
