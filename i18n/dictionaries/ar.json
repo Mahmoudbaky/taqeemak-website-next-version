@@ -200,7 +200,23 @@
     "payTitle": "بيانات البطاقة",
     "payHint": "تم حجز طلبك. أكمل عملية الدفع أدناه.",
     "editOrder": "تعديل بيانات الطلب",
-    "formError": "تعذر تحميل نموذج الدفع."
+    "formError": "تعذر تحميل نموذج الدفع.",
+    "shippingAddress": "عنوان الشحن",
+    "shortAddressHint": "أدخل رمز العنوان الوطني المختصر (مثال RGUC8214) واضغط تعبئة، أو اكتب العنوان أدناه.",
+    "shortAddress": "العنوان المختصر",
+    "fillAddress": "تعبئة",
+    "receiverMobile": "جوال المستلم",
+    "city": "المدينة",
+    "district": "الحي",
+    "street": "الشارع",
+    "buildingNo": "رقم المبنى",
+    "postalCode": "الرمز البريدي",
+    "shippingFee": "الشحن",
+    "freeShipping": "مجاني",
+    "addressFilled": "تمت تعبئة العنوان من عنوانك المختصر",
+    "addressNotFound": "لم يتم العثور على العنوان المختصر",
+    "postalInvalid": "الرمز البريدي يجب أن يكون 5 أرقام",
+    "shortAddressInvalid": "العنوان المختصر يجب أن يكون مثل RGUC8214"
   },
   "account": {
     "personal": "بياناتي الشخصية",
@@ -246,7 +262,8 @@
       "inProgress": "جارى التنفيذ",
       "resolved": "تم الحل",
       "cancelled": "ملغي",
-      "closed": "مغلقة"
+      "closed": "مغلقة",
+      "shipped": "تم الشحن"
     },
     "available": "متاح",
     "address": "العنوان",
@@ -275,7 +292,10 @@
       "1": "باي بال",
       "2": "سترايب",
       "3": "فودافون كاش"
-    }
+    },
+    "shipping": "الشحن",
+    "awaitingShipment": "قيد التجهيز",
+    "track": "تتبع"
   },
   "status": {
     "nfTitle": "الصفحة غير موجودة",

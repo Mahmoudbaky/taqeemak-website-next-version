@@ -48,11 +48,35 @@ export const ticketSchema = (m: Messages) =>
     problem: z.string().optional(),
   });
 
-export const checkoutSchema = (m: Pick<Dictionary["checkout"], "receiverRequired" | "dateRequired">) =>
+export const SHORT_ADDRESS_PATTERN = /^[A-Za-z]{4}\d{4}$/;
+
+/** Delivery address (Saudi National Address); only validated for device products. */
+const shippingSchema = (m: Messages, c: Pick<Dictionary["checkout"], "postalInvalid" | "shortAddressInvalid">) =>
+  z.object({
+    receiverMobile: phone(m),
+    city: required(m),
+    district: required(m),
+    street: required(m),
+    buildingNo: z.string().trim().max(10).optional(),
+    postalCode: z.string().trim().refine((v) => !v || /^\d{5}$/.test(v), c.postalInvalid).optional(),
+    shortAddress: z
+      .string()
+      .trim()
+      .refine((v) => !v || SHORT_ADDRESS_PATTERN.test(v), c.shortAddressInvalid)
+      .optional(),
+  });
+
+export const checkoutSchema = (
+  m: Messages,
+  c: Pick<Dictionary["checkout"], "receiverRequired" | "dateRequired" | "postalInvalid" | "shortAddressInvalid">,
+  needsShipping: boolean
+) =>
   z.object({
     qty: z.number().int().min(1).max(5),
-    person: z.string().trim().min(1, m.receiverRequired),
-    recDate: z.date({ error: m.dateRequired }),
+    person: z.string().trim().min(1, c.receiverRequired),
+    recDate: z.date({ error: c.dateRequired }),
+    // Certificates are digital: any address values are ignored and dropped on submit
+    shipping: needsShipping ? shippingSchema(m, c) : z.unknown().optional(),
   });
 
 export const profileSchema = (m: Messages) =>
@@ -71,6 +95,9 @@ export type LoginValues = z.infer<ReturnType<typeof loginSchema>>;
 export type RegisterValues = z.infer<ReturnType<typeof registerSchema>>;
 export type ContactValues = z.infer<ReturnType<typeof contactSchema>>;
 export type TicketValues = z.infer<ReturnType<typeof ticketSchema>>;
-export type CheckoutValues = z.infer<ReturnType<typeof checkoutSchema>>;
+export type ShippingValues = z.infer<ReturnType<typeof shippingSchema>>;
+export type CheckoutValues = Omit<z.infer<ReturnType<typeof checkoutSchema>>, "shipping"> & {
+  shipping?: ShippingValues;
+};
 export type ProfileValues = z.infer<ReturnType<typeof profileSchema>>;
 export type PasswordValues = z.infer<ReturnType<typeof passwordSchema>>;

@@ -200,7 +200,23 @@
     "payTitle": "Card details",
     "payHint": "Your order is reserved. Complete the payment below.",
     "editOrder": "Change order details",
-    "formError": "We couldn’t load the payment form."
+    "formError": "We couldn’t load the payment form.",
+    "shippingAddress": "Shipping address",
+    "shortAddressHint": "Enter your National Address short code (e.g. RGUC8214) and press Fill, or type the address below.",
+    "shortAddress": "Short address",
+    "fillAddress": "Fill",
+    "receiverMobile": "Receiver mobile",
+    "city": "City",
+    "district": "District",
+    "street": "Street",
+    "buildingNo": "Building no.",
+    "postalCode": "Postal code",
+    "shippingFee": "Shipping",
+    "freeShipping": "Free",
+    "addressFilled": "Address filled from your short address",
+    "addressNotFound": "Short address not found",
+    "postalInvalid": "Postal code must be 5 digits",
+    "shortAddressInvalid": "Short address must look like RGUC8214"
   },
   "account": {
     "personal": "Personal Information",
@@ -246,7 +262,8 @@
       "inProgress": "In Progress",
       "resolved": "Resolved",
       "cancelled": "Cancelled",
-      "closed": "Closed"
+      "closed": "Closed",
+      "shipped": "Shipped"
     },
     "available": "available",
     "address": "Address",
@@ -275,7 +292,10 @@
       "1": "PayPal",
       "2": "Stripe",
       "3": "Vodafone Cash"
-    }
+    },
+    "shipping": "Shipping",
+    "awaitingShipment": "Preparing",
+    "track": "Track"
   },
   "status": {
     "nfTitle": "Page Not Found",

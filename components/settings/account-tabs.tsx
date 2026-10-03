@@ -53,6 +53,34 @@ function StatusCell({
   return <StatusBadge tone={tone}>{label}</StatusBadge>;
 }
 
+/** Courier + tracking number (linked when OTO provides a tracking page); device orders only. */
+function ShipmentCell({ order }: { order: CustomerOrder }) {
+  const { account } = useI18n().dict;
+  const shipment = order.Shipment;
+  if (!shipment) return "—";
+  if (!shipment.Sh_TrackingNo) {
+    return <span className="text-muted-foreground">{account.awaitingShipment}</span>;
+  }
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="font-mono font-medium">
+        {[shipment.Sh_Courier, shipment.Sh_TrackingNo].filter(Boolean).join(" · ")}
+      </span>
+      {shipment.Sh_TrackingUrl && (
+        <a
+          href={shipment.Sh_TrackingUrl}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="text-[13px] font-bold text-link hover:text-deep"
+        >
+          {account.track}
+        </a>
+      )}
+    </div>
+  );
+}
+
 export function AccountTabs() {
   const { dict } = useI18n();
   const { account, common, support } = dict;
@@ -77,8 +105,11 @@ export function AccountTabs() {
   const orderStatus: Record<string, [string, Tone]> = {
     PENDING: [st.pending, "warn"],
     PROCESSING: [st.processing, "info"],
+    SHIPPED: [st.shipped, "info"],
     COMPLETED: [st.completed, "success"],
     DELIVERED: [st.delivered, "success"],
+    // The API spells it CANCELED; keep the legacy spelling too
+    CANCELED: [st.cancelled, "danger"],
     CANCELLED: [st.cancelled, "danger"],
   };
   const ticketStatus: Record<string, [string, Tone]> = {
@@ -113,6 +144,7 @@ export function AccountTabs() {
     },
     { header: account.orderDate, cell: (o) => formatDate(o.Or_Date) },
     { header: account.recDate, cell: (o) => formatDate(o.Or_RecDate) },
+    { header: account.shipping, cell: (o) => <ShipmentCell order={o} /> },
   ];
   const paymentColumns: Column<CustomerPayment>[] = [
     { header: account.payNo, cell: (p) => <Mono>{p.Pa_No}</Mono> },

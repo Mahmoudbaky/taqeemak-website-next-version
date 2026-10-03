@@ -254,7 +254,20 @@ export interface CustomerOrder {
   Or_Total: string;
   Or_Person: string;
   Or_RecDate: string;
-  Or_Status: "PENDING" | "PROCESSING" | "COMPLETED" | "DELIVERED" | "CANCELLED";
+  Or_Status: "PENDING" | "PROCESSING" | "SHIPPED" | "COMPLETED" | "DELIVERED" | "CANCELED" | "CANCELLED";
+  /** Present for device orders */
+  Shipment?: OrderShipment | null;
+}
+
+/** Tracking info included with customer orders (device orders only) */
+export interface OrderShipment {
+  Sh_Status: string;
+  Sh_Courier: string | null;
+  Sh_TrackingNo: string | null;
+  Sh_TrackingUrl: string | null;
+  Sh_City: string;
+  Sh_ShippedAt: string | null;
+  Sh_DeliveredAt: string | null;
 }
 
 export interface GetCustomerOrdersResponse {
@@ -413,6 +426,42 @@ export interface OnlineCheckoutRequest {
   qty: number;
   person: string;
   recDate: string;
+  /** Required for device products */
+  shipping?: ShippingAddress;
+}
+
+// Shipping (OTO)
+export interface ShippingAddress {
+  receiverMobile: string;
+  city: string;
+  district: string;
+  street: string;
+  buildingNo?: string;
+  postalCode?: string;
+  /** Saudi National Address short code, e.g. RGUC8214 */
+  shortAddress?: string;
+}
+
+export interface ShippingConfigResponse {
+  success: boolean;
+  message: string;
+  data: { fee: number; currency: string };
+  timestamp: string;
+}
+
+export interface NationalAddressResponse {
+  success: boolean;
+  message: string;
+  data: {
+    city?: string;
+    district?: string;
+    street?: string;
+    buildingNo?: string;
+    postalCode?: string;
+    shortAddress?: string;
+    formatted?: string;
+  };
+  timestamp: string;
 }
 
 export interface OnlineCheckoutResponse {

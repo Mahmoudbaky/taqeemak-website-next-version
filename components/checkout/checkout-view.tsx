@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -17,10 +17,12 @@ import { Reveal } from "@/components/shared/reveal";
 import { useCurrentUser } from "@/hooks/use-auth";
 import { useOnlineCheckout } from "@/hooks/use-checkout";
 import { useProducts } from "@/hooks/use-products";
+import { useShippingConfig } from "@/hooks/use-shipping";
 import { useI18n } from "@/i18n/dictionary-provider";
 import { checkoutSchema, type CheckoutValues } from "@/validators";
-import type { MoyasarPaymentForm } from "@/types/api";
+import type { MoyasarPaymentForm, OnlineCheckoutRequest } from "@/types/api";
 import { DatePicker } from "./date-picker";
+import { EMPTY_SHIPPING, ShippingAddress } from "./shipping-address";
 import { MoyasarForm } from "./moyasar-form";
 
 export const CHECKOUT_ORDER_KEY = "checkoutOrderNumber";
@@ -33,6 +35,20 @@ type PaymentSession = {
   callbackUrl: string;
   form: MoyasarPaymentForm & { publishableKey: string };
 };
+
+/** Drops empty optional fields so the API only receives real values. */
+function cleanShipping(shipping: NonNullable<CheckoutValues["shipping"]>): OnlineCheckoutRequest["shipping"] {
+  const optional = (value?: string) => value?.trim() || undefined;
+  return {
+    receiverMobile: shipping.receiverMobile,
+    city: shipping.city.trim(),
+    district: shipping.district.trim(),
+    street: shipping.street.trim(),
+    buildingNo: optional(shipping.buildingNo),
+    postalCode: optional(shipping.postalCode),
+    shortAddress: optional(shipping.shortAddress)?.toUpperCase(),
+  };
+}
 
 export function CheckoutView() {
   const { dict, locale } = useI18n();
@@ -47,10 +63,24 @@ export function CheckoutView() {
   const [session, setSession] = useState<PaymentSession | null>(null);
 
   const product = productId ? data?.items.find((p) => p.Pr_ID === productId) : data?.items[0];
+  // Physical devices ship to an address; certificates are digital
+  const needsShipping = String(product?.Pr_Type ?? "").toUpperCase() === "DEVICE";
+  const { data: shippingConfig } = useShippingConfig();
+
+  // The product loads after the form is created, so the resolver reads the current value
+  const needsShippingRef = useRef(needsShipping);
+  useEffect(() => {
+    needsShippingRef.current = needsShipping;
+  }, [needsShipping]);
 
   const form = useForm<CheckoutValues>({
-    resolver: zodResolver(checkoutSchema(checkout)),
-    defaultValues: { qty: 1, person: "", recDate: undefined },
+    resolver: ((values, context, options) =>
+      zodResolver(checkoutSchema(common, checkout, needsShippingRef.current))(
+        values as never,
+        context,
+        options as never
+      )) as Resolver<CheckoutValues>,
+    defaultValues: { qty: 1, person: "", recDate: undefined, shipping: EMPTY_SHIPPING },
   });
   const qty = useWatch({ control: form.control, name: "qty" });
 
@@ -76,7 +106,9 @@ export function CheckoutView() {
 
   const price = Number(product.Pr_Price) || 0;
   const currency = currencyLabel(product, locale, common.rs);
-  const total = qty * price;
+  const subtotal = qty * price;
+  const shippingFee = needsShipping ? (shippingConfig?.fee ?? 0) : 0;
+  const total = subtotal + shippingFee;
   const isRedirecting = startCheckout.isSuccess && !session;
 
   const onSubmit = (values: CheckoutValues) => {
@@ -91,6 +123,7 @@ export function CheckoutView() {
         qty: values.qty,
         person: values.person,
         recDate: values.recDate.toISOString(),
+        ...(needsShipping && values.shipping ? { shipping: cleanShipping(values.shipping) } : {}),
       },
       {
         onSuccess: ({ data }) => {
@@ -196,6 +229,7 @@ export function CheckoutView() {
             )}
           />
         </div>
+        {needsShipping && <ShippingAddress form={form} />}
           </fieldset>
         </form>
       </Reveal>
@@ -210,9 +244,15 @@ export function CheckoutView() {
             {checkout.subtotal} ({qty} × {price})
           </span>
           <span>
-            {total} {currency}
+            {subtotal} {currency}
           </span>
         </div>
+        {needsShipping && (
+          <div className="flex justify-between text-muted-foreground">
+            <span>{checkout.shippingFee}</span>
+            <span>{shippingFee > 0 ? `${shippingFee} ${currency}` : checkout.freeShipping}</span>
+          </div>
+        )}
         <div className="flex justify-between border-t pt-4 text-[22px] font-extrabold">
           <span>{checkout.total}</span>
           <span>
