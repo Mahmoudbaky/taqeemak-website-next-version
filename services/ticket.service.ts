@@ -4,5 +4,5 @@ import type { CreateTicketRequest, CreateTicketResponse, GetCustomerTicketsRespo
 export const createTicket = async (body: CreateTicketRequest) =>
   (await apiClient.post<CreateTicketResponse>("/api/v1/tickets", body)).data;
 
-export const getCustomerTickets = async (customerId: number) =>
+export const getCustomerTickets = async (customerId: string) =>
   (await apiClient.get<GetCustomerTicketsResponse>(`/api/v1/tickets/customer/${customerId}`)).data;

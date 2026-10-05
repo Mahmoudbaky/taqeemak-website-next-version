@@ -4,5 +4,5 @@ import type { CreateOrderRequest, CreateOrderResponse, GetCustomerOrdersResponse
 export const createOrder = async (body: CreateOrderRequest) =>
   (await apiClient.post<CreateOrderResponse>("/api/v1/orders", body)).data;
 
-export const getCustomerOrders = async (customerId: number) =>
+export const getCustomerOrders = async (customerId: string) =>
   (await apiClient.get<GetCustomerOrdersResponse>(`/api/v1/orders/customer/${customerId}`)).data;

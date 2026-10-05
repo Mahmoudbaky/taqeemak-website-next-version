@@ -19,7 +19,7 @@ export interface RegisterRequest {
 }
 
 export interface Customer {
-  Cu_ID: number;
+  Cu_ID: string;
   Cu_Date: string | null;
   Cu_NameAr: string;
   Cu_NameEn: string;
@@ -98,7 +98,7 @@ export interface RefreshTokenResponse {
 export interface EmailOrMobileVerificationCodeRequest {
   email?: string;
   mobile?: string;
-  customerId: number;
+  customerId: string;
 }
 
 export interface EmailOrMobileVerificationCodeResponse {
@@ -159,7 +159,7 @@ export enum ProductType {
 }
 
 export interface ProductItem {
-  Pr_ID: number;
+  Pr_ID: string;
   Pr_NameAr: string;
   Pr_NameEn: string;
   Pr_DescriptionAr: string;
@@ -172,8 +172,8 @@ export interface ProductItem {
   Pr_Type: ProductType;
   Pr_CreateAt: string;
   Pr_UpdateAt: string;
-  Pr_UpdateBy: number;
-  Pr_CreateBy: number;
+  Pr_UpdateBy: string;
+  Pr_CreateBy: string;
   Currencies: Currency;
 }
 
@@ -205,8 +205,8 @@ export interface GetProductsResponse {
 
 // Order Types
 export interface CreateOrderRequest {
-  customerId: number;
-  productId: number;
+  customerId: string;
+  productId: string;
   price: number;
   currencyId: number;
   qty: number;
@@ -217,10 +217,10 @@ export interface CreateOrderRequest {
 }
 
 export interface Order {
-  Or_ID: number;
+  Or_ID: string;
   Or_Date: string;
-  Or_CustomerID: number;
-  Or_ProductId: number;
+  Or_CustomerID: string;
+  Or_ProductId: string;
   Or_Price: string;
   Or_CurrencyID: number;
   Or_Qty: number;
@@ -243,11 +243,11 @@ export interface CreateOrderResponse {
 
 // Customer Order (from GET /api/v1/orders/customer/{customerId})
 export interface CustomerOrder {
-  Or_ID: number;
+  Or_ID: string;
   Or_No: string;
   Or_Date: string;
-  Or_CustomerID: number;
-  Or_ProductId: number;
+  Or_CustomerID: string;
+  Or_ProductId: string;
   Or_Price: string;
   Or_CurrencyID: number;
   Or_Qty: number;
@@ -279,17 +279,17 @@ export interface GetCustomerOrdersResponse {
 
 // Customer Payment (from GET /api/v1/payments/customer/{customerId})
 export interface CustomerPayment {
-  Pa_ID: number;
+  Pa_ID: string;
   Pa_No: string;
   Pa_Date: string;
-  Pa_CustomerID: number;
-  Pa_OrderID: number;
+  Pa_CustomerID: string;
+  Pa_OrderID: string;
   Pa_Amount: string;
   Pa_CurrencyID: number;
   Pa_MethodID: number;
   Pa_Photo: string | null;
   Pa_CreateAt: string;
-  Pa_CreateBy: number;
+  Pa_CreateBy: string;
   Pa_IsActive: boolean;
   Orders: {
     Products: {
@@ -325,7 +325,7 @@ export enum TicketCategory {
 
 // Ticket Types
 export interface CreateTicketRequest {
-  customerId: number;
+  customerId: string;
   crName: string;
   subject: string;
   problem: string;
@@ -337,23 +337,23 @@ export interface CreateTicketRequest {
 }
 
 export interface Ticket {
-  Ti_ID: number;
+  Ti_ID: string;
   Ti_No: string;
   Ti_Category: string;
   Ti_Priority: string;
-  Ti_CustomerID: number;
+  Ti_CustomerID: string;
   Ti_CrName: string;
   Ti_Subject: string;
   Ti_Problem: string;
   Ti_Attach: string | null;
   Ti_Response: string | null;
   Ti_ActionAt: string | null;
-  Ti_ActionBy: number | null;
+  Ti_ActionBy: string | null;
   Ti_Status: number;
   Ti_IsActive: boolean;
   Ti_CreateAt: string;
   Ti_UpdateAt: string | null;
-  Ti_UpdateBy: number | null;
+  Ti_UpdateBy: string | null;
   Customers: Customer;
 }
 
@@ -366,23 +366,23 @@ export interface CreateTicketResponse {
 
 // Customer Ticket (from GET /api/v1/tickets/customer/{customerId})
 export interface CustomerTicket {
-  Ti_ID: number;
+  Ti_ID: string;
   Ti_No: string;
   Ti_Category: "BILLING" | "SUPPORT" | "GENERAL";
   Ti_Priority: "LOW" | "HIGH" | "CRITICAL";
-  Ti_CustomerID: number;
+  Ti_CustomerID: string;
   Ti_CrName: string;
   Ti_Subject: string;
   Ti_Problem: string;
   Ti_Attach: string | null;
   Ti_Response: string | null;
   Ti_ActionAt: string | null;
-  Ti_ActionBy: number | null;
+  Ti_ActionBy: string | null;
   Ti_Status: "PENDING" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
   Ti_IsActive: boolean;
   Ti_CreateAt: string;
   Ti_UpdateAt: string | null;
-  Ti_UpdateBy: number | null;
+  Ti_UpdateBy: string | null;
 }
 
 export interface GetCustomerTicketsResponse {
@@ -401,7 +401,7 @@ export interface CreateMessageRequest {
 }
 
 export interface Message {
-  Me_ID: number;
+  Me_ID: string;
   Me_Date: string;
   Me_Name: string;
   Me_EMail: string;
@@ -410,7 +410,7 @@ export interface Message {
   Me_IsRead: boolean;
   Me_Response: string | null;
   Me_ActionAt: string | null;
-  Me_ActionBy: number | null;
+  Me_ActionBy: string | null;
 }
 
 export interface CreateMessageResponse {
@@ -422,7 +422,7 @@ export interface CreateMessageResponse {
 
 // Online payment (Moyasar)
 export interface OnlineCheckoutRequest {
-  productId: number;
+  productId: string;
   qty: number;
   person: string;
   recDate: string;
@@ -468,7 +468,7 @@ export interface OnlineCheckoutResponse {
   success: boolean;
   message: string;
   data: {
-    orderId: number;
+    orderId: string;
     orderNumber: string;
     gatewayRef: string;
     /** Hosted invoice page (redirect flow) */
@@ -495,7 +495,7 @@ export interface OnlinePaymentStatusResponse {
   success: boolean;
   message: string;
   data: {
-    orderId: number;
+    orderId: string;
     orderNumber: string;
     status: OnlinePaymentStatus;
     productType: string;

@@ -16,13 +16,13 @@ export interface UploadData {
   url: string;
   secureUrl: string;
   publicId: string;
-  mediaId?: number;
+  mediaId?: string;
   width?: number;
   height?: number;
 }
 
 export interface UploadFileOptions {
-  customerId?: number;
+  customerId?: string;
   mediaType?: MediaType;
   onUploadProgress?: (event: AxiosProgressEvent) => void;
 }

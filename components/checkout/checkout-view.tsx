@@ -55,7 +55,7 @@ export function CheckoutView() {
   const { checkout, common } = dict;
   const router = useRouter();
   const pathname = usePathname();
-  const productId = Number(useSearchParams().get("productId"));
+  const productId = useSearchParams().get("productId");
   const localize = useLocalizedHref();
   const { isLoggedIn } = useCurrentUser();
   const { data, isPending } = useProducts({ page: 1, limit: 100 });
