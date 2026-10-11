@@ -1,0 +1,131 @@
+{
+  "projectId": "c0abb422-0bc9-46dd-9a06-13705928c8f7",
+  "shape": "package",
+  "pkg": "@taqeemak/ui",
+  "globalName": "Taqeemak",
+  "entry": ".design-sync/pkg/index.ts",
+  "buildCmd": "node .design-sync/pkg/build.mjs",
+  "srcDir": "../../components",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": "dist/taqeemak.css",
+  "extraFonts": [
+    "fonts/fonts.css"
+  ],
+  "provider": {
+    "component": "TaqeemakProvider"
+  },
+  "componentSrcMap": {
+    "TaqeemakProvider": "layout/provider.tsx",
+    "AvatarBadge": null,
+    "AvatarFallback": null,
+    "AvatarGroup": null,
+    "AvatarGroupCount": null,
+    "AvatarImage": null,
+    "CalendarDayButton": null,
+    "CardAction": null,
+    "CardContent": null,
+    "CardDescription": null,
+    "CardFooter": null,
+    "CardHeader": null,
+    "CardTitle": null,
+    "DialogClose": null,
+    "DialogContent": null,
+    "DialogDescription": null,
+    "DialogFooter": null,
+    "DialogHeader": null,
+    "DialogOverlay": null,
+    "DialogPortal": null,
+    "DialogTitle": null,
+    "DialogTrigger": null,
+    "DropdownMenuCheckboxItem": null,
+    "DropdownMenuContent": null,
+    "DropdownMenuGroup": null,
+    "DropdownMenuItem": null,
+    "DropdownMenuLabel": null,
+    "DropdownMenuPortal": null,
+    "DropdownMenuRadioGroup": null,
+    "DropdownMenuRadioItem": null,
+    "DropdownMenuSeparator": null,
+    "DropdownMenuShortcut": null,
+    "DropdownMenuSub": null,
+    "DropdownMenuSubContent": null,
+    "DropdownMenuSubTrigger": null,
+    "DropdownMenuTrigger": null,
+    "FieldContent": null,
+    "FieldDescription": null,
+    "FieldError": null,
+    "FieldGroup": null,
+    "FieldLabel": null,
+    "FieldLegend": null,
+    "FieldSeparator": null,
+    "FieldSet": null,
+    "FieldTitle": null,
+    "InputOTPGroup": null,
+    "InputOTPSeparator": null,
+    "InputOTPSlot": null,
+    "PopoverAnchor": null,
+    "PopoverContent": null,
+    "PopoverDescription": null,
+    "PopoverHeader": null,
+    "PopoverTitle": null,
+    "PopoverTrigger": null,
+    "SheetClose": null,
+    "SheetContent": null,
+    "SheetDescription": null,
+    "SheetFooter": null,
+    "SheetHeader": null,
+    "SheetTitle": null,
+    "SheetTrigger": null,
+    "TableBody": null,
+    "TableCaption": null,
+    "TableCell": null,
+    "TableFooter": null,
+    "TableHead": null,
+    "TableHeader": null,
+    "TableRow": null,
+    "TabsContent": null,
+    "TabsList": null,
+    "TabsTrigger": null,
+    "ToggleGroupItem": null
+  },
+  "docsDir": "../docs",
+  "overrides": {
+    "Dialog": {
+      "cardMode": "single",
+      "viewport": "720x520"
+    },
+    "Sheet": {
+      "cardMode": "single",
+      "viewport": "720x560"
+    },
+    "DropdownMenu": {
+      "cardMode": "single",
+      "viewport": "560x340"
+    },
+    "Popover": {
+      "cardMode": "single",
+      "viewport": "560x320"
+    },
+    "Toaster": {
+      "cardMode": "single",
+      "viewport": "720x360"
+    },
+    "DataTable": {
+      "cardMode": "column"
+    },
+    "HeroKiosk": {
+      "cardMode": "column"
+    },
+    "AuthShell": {
+      "cardMode": "single",
+      "viewport": "1200x760"
+    },
+    "Table": {
+      "cardMode": "column"
+    },
+    "ToggleGroup": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

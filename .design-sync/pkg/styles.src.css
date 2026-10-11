@@ -1,0 +1,34 @@
+/* Design-sync stylesheet: the site's own globals.css (tokens, theme, base
+   layer) compiled with Tailwind v4 over the whole repo, plus the preview
+   sources and a safelist so the design agent's own layout glue resolves. */
+@import "../../app/globals.css";
+
+@source "../previews";
+
+/* next/font sets these on <html> in the app; here they name the self-hosted
+   @font-face families shipped from fonts/fonts.css. */
+:root {
+  --font-cairo: "Cairo";
+  --font-plex-mono: "IBM Plex Mono";
+}
+
+/* Brand + semantic colors for every color utility family. */
+@source inline("{hover:,}{bg,text,border,ring,fill,stroke,from,to,via,outline,divide}-{background,foreground,card,card-foreground,popover,popover-foreground,primary,primary-foreground,secondary,secondary-foreground,muted,muted-foreground,accent,accent-foreground,destructive,border,input,ring,soft,link,navy,deep,highlight,success,success-soft,warn,warn-soft,danger-soft,navy-muted,white,black,transparent}");
+@source inline("{bg,text,border}-{primary,navy,deep,foreground,white,black}/{5,10,15,20,25,30,40,50,60,70,80,90}");
+/* Spacing scale for padding, margin, gap, sizing (logical ps/pe/ms/me for RTL). */
+@source inline("{p,px,py,pt,pb,ps,pe,m,mx,my,mt,mb,ms,me,gap,gap-x,gap-y,space-y,space-x,w,h,size,min-h,min-w,max-h,start,end,top,bottom,inset}-{0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,6,7,8,9,10,11,12,14,16,18,20,22,24,28,32,36,40,48,56,64,72,80,96}");
+@source inline("{sm:,md:,lg:,}{p,px,py,gap}-{2,3,4,5,6,8,10,12,14,16}");
+@source inline("{w,h,min-h,max-w,max-h,size}-{full,screen,fit,auto,svh,dvh,min,max}");
+@source inline("max-w-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl,prose}");
+/* Type, radius, elevation. */
+@source inline("text-{xs,sm,base,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl}");
+@source inline("{sm:,md:,lg:}text-{base,lg,xl,2xl,3xl,4xl,5xl,6xl}");
+@source inline("font-{light,normal,medium,semibold,bold,extrabold,black,sans,mono,heading}");
+@source inline("{leading-{none,tight,snug,normal,relaxed,loose},tracking-{tight,normal,wide},text-{start,end,center},truncate,uppercase,whitespace-nowrap,line-clamp-{1,2,3}}");
+@source inline("rounded{,-none,-sm,-md,-lg,-xl,-2xl,-3xl,-4xl,-full}");
+@source inline("{shadow,shadow-xs,shadow-sm,shadow-md,shadow-lg,shadow-xl,shadow-2xl,shadow-none,border,border-0,border-2,border-t,border-b,border-s,border-e,border-y,border-x,border-dashed}");
+/* Layout. */
+@source inline("{sm:,md:,lg:,}{flex,inline-flex,grid,block,inline-block,hidden,contents,flex-row,flex-col,flex-wrap,flex-1,flex-none,shrink-0,grow,items-start,items-center,items-end,items-stretch,items-baseline,justify-start,justify-center,justify-end,justify-between,justify-around,self-start,self-center,self-end,self-stretch}");
+@source inline("{sm:,md:,lg:,}grid-cols-{1,2,3,4,5,6,12}");
+@source inline("{sm:,md:,lg:,}col-span-{1,2,3,4,full}");
+@source inline("{relative,absolute,fixed,sticky,overflow-hidden,overflow-auto,overflow-x-auto,z-10,z-20,z-50,mx-auto,object-cover,object-contain,aspect-square,aspect-video,opacity-50,opacity-70,cursor-pointer,transition,transition-colors,animate-reveal,animate-float,animate-marquee,animate-spin,animate-pulse}");
