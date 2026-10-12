@@ -1,3 +1,5 @@
+import type { BusinessCategory } from "@/validators";
+
 /** Standard API envelope returned by every Taqeemak backend endpoint. */
 export interface ApiResponse<T> {
   success: boolean;
@@ -16,6 +18,7 @@ export interface RegisterRequest {
   address: string;
   record: string;
   companyName?: string;
+  category?: BusinessCategory;
 }
 
 export interface Customer {

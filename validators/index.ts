@@ -12,6 +12,23 @@ const phone = (m: Messages) =>
 export const loginSchema = (m: Messages) =>
   z.object({ email: email(m), password: z.string().min(1, m.required) });
 
+/** Matches the backend's `BusinessCategory` enum; used for the same-category benchmark. */
+export const businessCategories = [
+  "HEALTHCARE",
+  "RESTAURANT",
+  "CAFE",
+  "RETAIL",
+  "BEAUTY",
+  "HOSPITALITY",
+  "GOVERNMENT",
+  "BANKING",
+  "EDUCATION",
+  "AUTOMOTIVE",
+  "OTHER",
+] as const;
+
+export type BusinessCategory = (typeof businessCategories)[number];
+
 export const registerSchema = (m: Messages, mismatch: string) =>
   z
     .object({
@@ -19,6 +36,7 @@ export const registerSchema = (m: Messages, mismatch: string) =>
       nameEn: required(m),
       record: required(m),
       companyName: z.string().max(500).optional(),
+      category: z.enum(businessCategories, { error: m.required }),
       email: email(m),
       mobile: phone(m),
       address: required(m),

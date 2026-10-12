@@ -1,20 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { FieldGroup } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Spinner } from "@/components/ui/spinner";
-import { FormField, TextField } from "@/components/forms/form-field";
+import { FieldLabelText, FormField, TextField } from "@/components/forms/form-field";
 import { PasswordInput } from "@/components/forms/password-input";
 import { PhoneInput } from "@/components/forms/phone-input";
 import { LocaleLink, useLocalizedHref } from "@/components/shared/locale-link";
 import { RedirectIfAuthenticated } from "./require-auth";
 import { useRegister } from "@/hooks/use-auth";
 import { useI18n } from "@/i18n/dictionary-provider";
-import { registerSchema, type RegisterValues } from "@/validators";
+import { businessCategories, registerSchema, type RegisterValues } from "@/validators";
 
 export function RegisterForm() {
   const { dict } = useI18n();
@@ -38,9 +39,9 @@ export function RegisterForm() {
     },
   });
 
-  const onSubmit = ({ nameAr, nameEn, record, companyName, email, mobile, address, password }: RegisterValues) =>
+  const onSubmit = ({ nameAr, nameEn, record, companyName, category, email, mobile, address, password }: RegisterValues) =>
     register.mutate(
-      { nameAr, nameEn, record, email, mobile, address, password, companyName: companyName || undefined },
+      { nameAr, nameEn, record, category, email, mobile, address, password, companyName: companyName || undefined },
       {
         // Same flow as before: create the account, then sign in explicitly.
         onSuccess: () => {
@@ -66,6 +67,39 @@ export function RegisterForm() {
             <TextField control={control} name="nameEn" label={auth.nameEn} required inputProps={{ dir: "ltr" }} />
             <TextField control={control} name="record" label={auth.record} required />
             <TextField control={control} name="companyName" label={`${auth.company} (${auth.optional})`} />
+            <Controller
+              control={control}
+              name="category"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid} className="col-span-full gap-2.5">
+                  <FieldLabel className="text-sm font-semibold">
+                    <FieldLabelText label={auth.category} required />
+                  </FieldLabel>
+                  <ToggleGroup
+                    type="single"
+                    value={field.value ?? ""}
+                    onValueChange={(v) => v && field.onChange(v)}
+                    aria-invalid={fieldState.invalid}
+                    className="flex flex-wrap justify-start gap-2"
+                  >
+                    {businessCategories.map((value) => (
+                      <ToggleGroupItem
+                        key={value}
+                        value={value}
+                        className="h-auto rounded-full! border bg-background px-4 py-2 text-sm font-semibold data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-white"
+                      >
+                        {auth.categories[value]}
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                  {fieldState.invalid ? (
+                    <FieldError errors={[fieldState.error]} />
+                  ) : (
+                    <FieldDescription>{auth.categoryHint}</FieldDescription>
+                  )}
+                </Field>
+              )}
+            />
             <TextField
               control={control}
               name="email"
