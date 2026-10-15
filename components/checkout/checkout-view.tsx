@@ -17,7 +17,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { useCurrentUser } from "@/hooks/use-auth";
 import { useOnlineCheckout } from "@/hooks/use-checkout";
 import { useProducts } from "@/hooks/use-products";
-import { useShippingConfig } from "@/hooks/use-shipping";
+import { useShippingFee } from "@/hooks/use-shipping";
 import { useI18n } from "@/i18n/dictionary-provider";
 import { checkoutSchema, type CheckoutValues } from "@/validators";
 import type { MoyasarPaymentForm, OnlineCheckoutRequest } from "@/types/api";
@@ -65,7 +65,6 @@ export function CheckoutView() {
   const product = productId ? data?.items.find((p) => p.Pr_ID === productId) : data?.items[0];
   // Physical devices ship to an address; certificates are digital
   const needsShipping = String(product?.Pr_Type ?? "").toUpperCase() === "DEVICE";
-  const { data: shippingConfig } = useShippingConfig();
 
   // The product loads after the form is created, so the resolver reads the current value
   const needsShippingRef = useRef(needsShipping);
@@ -83,6 +82,9 @@ export function CheckoutView() {
     defaultValues: { qty: 1, person: "", recDate: undefined, shipping: EMPTY_SHIPPING },
   });
   const qty = useWatch({ control: form.control, name: "qty" });
+  const shippingCity = useWatch({ control: form.control, name: "shipping.city" }) ?? "";
+  // Live pricing follows the city; the backend recomputes the fee when the order is placed
+  const shippingQuote = useShippingFee({ enabled: needsShipping, city: shippingCity, qty });
 
   if (isPending) {
     return (
@@ -107,7 +109,7 @@ export function CheckoutView() {
   const price = Number(product.Pr_Price) || 0;
   const currency = currencyLabel(product, locale, common.rs);
   const subtotal = qty * price;
-  const shippingFee = needsShipping ? (shippingConfig?.fee ?? 0) : 0;
+  const shippingFee = shippingQuote.fee;
   const total = subtotal + shippingFee;
   const isRedirecting = startCheckout.isSuccess && !session;
 
@@ -249,8 +251,17 @@ export function CheckoutView() {
         </div>
         {needsShipping && (
           <div className="flex justify-between text-muted-foreground">
-            <span>{checkout.shippingFee}</span>
-            <span>{shippingFee > 0 ? `${shippingFee} ${currency}` : checkout.freeShipping}</span>
+            <span>
+              {checkout.shippingFee}
+              {shippingQuote.courierName && <span className="text-[13px]"> ({shippingQuote.courierName})</span>}
+            </span>
+            {shippingQuote.isLoading ? (
+              <Spinner />
+            ) : shippingQuote.needsCity ? (
+              <span className="text-[13px]">{checkout.shippingByCity}</span>
+            ) : (
+              <span>{shippingFee > 0 ? `${shippingFee} ${currency}` : checkout.freeShipping}</span>
+            )}
           </div>
         )}
         <div className="flex justify-between border-t pt-4 text-[22px] font-extrabold">

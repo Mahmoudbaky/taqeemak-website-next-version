@@ -5,6 +5,7 @@ export const queryKeys = {
   products: (params?: GetProductsParams) => ["products", params ?? {}] as const,
   paymentStatus: (orderNumber: string | null) => ["paymentStatus", orderNumber] as const,
   shippingConfig: () => ["shippingConfig"] as const,
+  shippingQuote: (city: string, qty: number) => ["shippingQuote", city.toLowerCase(), qty] as const,
   customer: (customerId: string | undefined) => ["customer", customerId] as const,
   orders: (customerId: string | undefined) => ["customer", customerId, "orders"] as const,
   payments: (customerId: string | undefined) => ["customer", customerId, "payments"] as const,

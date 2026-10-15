@@ -448,7 +448,21 @@ export interface ShippingAddress {
 export interface ShippingConfigResponse {
   success: boolean;
   message: string;
-  data: { fee: number; currency: string };
+  /** pricing 'live': the fee depends on the city (POST /shipping/quote); 'fee' is the fallback */
+  data: { fee: number; currency: string; pricing?: "flat" | "live" };
+  timestamp: string;
+}
+
+export interface ShippingQuoteResponse {
+  success: boolean;
+  message: string;
+  data: {
+    fee: number;
+    currency: string;
+    source: "live" | "flat";
+    deliveryOptionName: string | null;
+    estimatedDelivery: string | null;
+  };
   timestamp: string;
 }
 

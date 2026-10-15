@@ -231,7 +231,8 @@
     "addressFilled": "تمت تعبئة العنوان من عنوانك المختصر",
     "addressNotFound": "لم يتم العثور على العنوان المختصر",
     "postalInvalid": "الرمز البريدي يجب أن يكون 5 أرقام",
-    "shortAddressInvalid": "العنوان المختصر يجب أن يكون مثل RGUC8214"
+    "shortAddressInvalid": "العنوان المختصر يجب أن يكون مثل RGUC8214",
+    "shippingByCity": "تُحسب بعد إدخال المدينة"
   },
   "account": {
     "personal": "بياناتي الشخصية",

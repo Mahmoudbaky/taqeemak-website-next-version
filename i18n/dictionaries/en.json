@@ -231,7 +231,8 @@
     "addressFilled": "Address filled from your short address",
     "addressNotFound": "Short address not found",
     "postalInvalid": "Postal code must be 5 digits",
-    "shortAddressInvalid": "Short address must look like RGUC8214"
+    "shortAddressInvalid": "Short address must look like RGUC8214",
+    "shippingByCity": "Calculated after you enter the city"
   },
   "account": {
     "personal": "Personal Information",
